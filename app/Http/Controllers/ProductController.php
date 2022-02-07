@@ -39,7 +39,29 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validation
+        $request->validate([
+            'title' => 'required|max:100',
+            'description' => 'required',
+            'tags' => 'nullable|exists:tags,id',
+        ]);
+
+
+
+        $data = $request->all();
+        // dd($data);
+
+        $new_product = new Product();
+
+        $new_product->fill($data);
+
+        $new_product->save();
+
+        if(array_key_exists('tags', $data)) {
+            $new_product->tags()->attach($data['tags']);
+        }
+
+        return redirect()->route('products.show', $new_product->id);
     }
 
     /**
@@ -50,7 +72,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        //
+        return 'Dettaglio prodotto';
     }
 
     /**
