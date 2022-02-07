@@ -39,7 +39,22 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validation
+        $request->validate([
+            'title' => 'required|max:100',
+            'description' => 'required',
+        ]);
+
+        $data = $request->all();
+        dump($data);
+
+        $new_product = new Product();
+
+        $new_product->fill($data);
+
+        $new_product->save();
+
+        return redirect()->route('products.show', $new_product->id);
     }
 
     /**
@@ -50,7 +65,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        //
+        return 'Dettaglio prodotto';
     }
 
     /**
